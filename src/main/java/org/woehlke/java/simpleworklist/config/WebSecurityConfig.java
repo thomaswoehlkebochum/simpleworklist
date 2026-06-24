@@ -68,9 +68,9 @@ public class WebSecurityConfig {
 
     @Bean
     public AuthenticationProvider authenticationProvider(){
-        DaoAuthenticationProvider d = new DaoAuthenticationProvider();
+        DaoAuthenticationProvider d = new DaoAuthenticationProvider(userDetailsService());
         d.setPasswordEncoder(encoder());
-        d.setUserDetailsService(userDetailsService());
+        //d.setUserDetailsService(userDetailsService());
         return d;
     }
 
@@ -78,7 +78,7 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .headers((headers) -> headers.disable() )
-            .authorizeRequests((authorizeRequests) -> authorizeRequests
+            .authorizeHttpRequests((authorizeRequests) -> authorizeRequests
                 .requestMatchers(
                     simpleworklistProperties.getWebSecurity().getAntPatternsPublic()
                 )
@@ -86,8 +86,8 @@ public class WebSecurityConfig {
                 .anyRequest()
                 .fullyAuthenticated()
             )
-            .csrf()
-            .and()
+            //.csrf()
+            //.and()
             .formLogin((formLogin) -> formLogin
                 .loginPage(simpleworklistProperties.getWebSecurity().getLoginPage())
                 .usernameParameter(simpleworklistProperties.getWebSecurity().getUsernameParameter())
@@ -98,8 +98,8 @@ public class WebSecurityConfig {
                 .successHandler(this.loginSuccessHandler)
                 .permitAll()
             )
-            .csrf()
-            .and()
+            //.csrf()
+            //.and()
             .logout((logout) ->  logout
                 .logoutUrl(simpleworklistProperties.getWebSecurity().getLogoutUrl())
                 .deleteCookies(simpleworklistProperties.getWebSecurity().getCookieNamesToClear())

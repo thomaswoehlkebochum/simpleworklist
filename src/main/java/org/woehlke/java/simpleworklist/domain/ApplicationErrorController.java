@@ -2,7 +2,7 @@ package org.woehlke.java.simpleworklist.domain;
 
 
 import lombok.extern.java.Log;
-import org.springframework.boot.web.servlet.error.ErrorController;
+//import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -18,7 +18,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 @Log
 @Controller
 @RequestMapping(path="/fehler")
-public class ApplicationErrorController implements ErrorController {
+public class ApplicationErrorController {
 
     @ExceptionHandler
     @RequestMapping(path="", method={ GET, POST, PUT,  HEAD, PATCH, DELETE, OPTIONS, TRACE })

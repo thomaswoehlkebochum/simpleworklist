@@ -49,7 +49,7 @@ public class UserChatMessageController extends AbstractController {
     this.breadcrumbService = breadcrumbService;
   }
 
-  @RequestMapping(path = "/{userId}/messages/", method = RequestMethod.GET)
+  @RequestMapping(path = "/{userId}/messages", method = RequestMethod.GET)
   public final String getLastMessagesBetweenCurrentAndOtherUser(
     @Valid @NotNull @PathVariable("userId") UserAccount otherUser,
     @PageableDefault(sort = "rowCreatedAt", direction = Sort.Direction.DESC) Pageable request,
@@ -93,7 +93,7 @@ public class UserChatMessageController extends AbstractController {
     return "user/messages/all";
   }
 
-  @RequestMapping(path = "/{userId}/messages/", method = RequestMethod.POST)
+  @RequestMapping(path = "/{userId}/messages", method = RequestMethod.POST)
   public final String sendNewMessageToOtherUser(
     @PathVariable("userId") UserAccount otherUser,
     @Valid @ModelAttribute("newUser2UserMessage") ChatMessageForm chatMessageForm,
@@ -123,7 +123,7 @@ public class UserChatMessageController extends AbstractController {
     } else {
       userChatMessageControllerService.sendNewUserMessage(thisUser, otherUser, chatMessageForm);
       model.addAttribute("userSession", userSession);
-      return "redirect:/user2user/" + otherUser.getId() + "/messages/";
+      return "redirect:/user2user/" + otherUser.getId() + "/messages";
     }
   }
 

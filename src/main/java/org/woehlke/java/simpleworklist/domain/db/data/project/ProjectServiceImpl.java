@@ -73,7 +73,8 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW, readOnly = false)
     public Project add(@NotNull Project entity) {
-        log.info("saveAndFlush");
+        log.info("saveAndFlush : "+entity.toString());
+        entity.setId(null);
         entity.setUuid(UUID.randomUUID());
         return projectRepository.saveAndFlush(entity);
     }

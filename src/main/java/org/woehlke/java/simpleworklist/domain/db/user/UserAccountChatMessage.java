@@ -55,7 +55,7 @@ public class UserAccountChatMessage extends AuditModel implements Serializable, 
         sequenceName = "user_account_chat_message_sequence",
         initialValue = 1000
     )
-    private Long id;
+    private Long id = null;
 
     @NotBlank
     @Length(min=1,max=65535)

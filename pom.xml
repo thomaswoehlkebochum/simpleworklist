@@ -10,7 +10,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.1.1</version>
+        <version>4.1.0</version>
         <relativePath />
     </parent>
 
@@ -71,7 +71,7 @@
     </distributionManagement>
 
     <properties>
-        <version.java>17</version.java>
+        <version.java>21</version.java>
         <version.maven>3.6.3</version.maven>
         <maven.compiler.source>${version.java}</maven.compiler.source>
         <maven.compiler.target>${version.java}</maven.compiler.target>
@@ -608,10 +608,22 @@
                 </exclusions>
             </dependency>
             -->
+            <!-- Source: https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-test-autoconfigure -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-test-autoconfigure</artifactId>
+                <version>4.1.0</version>
+                <scope>compile</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-properties-migrator</artifactId>
+                <scope>runtime</scope>
+            </dependency>
             <dependency>
                 <groupId>org.yaml</groupId>
                 <artifactId>snakeyaml</artifactId>
-                <version>1.33</version>
+                <version>2.6</version>
             </dependency>
             <dependency>
                 <groupId>org.hibernate.orm</groupId>
@@ -711,8 +723,9 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <artifactId>spring-boot-starter-webmvc</artifactId>
         </dependency>
+        <!-- 
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -728,15 +741,20 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webmvc-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security-test</artifactId>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-logging</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-test</artifactId>
-            <scope>test</scope>
         </dependency>
 
         <dependency>
@@ -1612,10 +1630,12 @@
                             <groupId>org.apache.commons</groupId>
                             <artifactId>commons-compress</artifactId>
                         </exclude>
+                        <!--
                         <exclude>
                             <groupId>commons-logging</groupId>
                             <artifactId>commons-logging</artifactId>
                         </exclude>
+                        -->
                         <exclude>
                             <groupId>org.apache.commons</groupId>
                             <artifactId>commons-text</artifactId>
@@ -1648,6 +1668,7 @@
                             <groupId>com.fasterxml.jackson.datatype</groupId>
                             <artifactId>jackson-datatype-jdk8</artifactId>
                         </exclude>
+                        <!--
                         <exclude>
                             <groupId>com.fasterxml.jackson.core</groupId>
                             <artifactId>jackson-databind</artifactId>
@@ -1660,6 +1681,7 @@
                             <groupId>com.fasterxml.jackson.core</groupId>
                             <artifactId>jackson-annotations</artifactId>
                         </exclude>
+                    -->
                         <exclude>
                             <groupId>dom4j</groupId>
                             <artifactId>dom4j</artifactId>

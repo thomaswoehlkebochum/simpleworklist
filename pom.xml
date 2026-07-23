@@ -99,9 +99,9 @@
         <version.groovy-all>4.0.7</version.groovy-all>
         <hamcrest.version>2.2</hamcrest.version>
         <jsoup.version>1.15.3</jsoup.version>
-        <pmdVersion>6.53.0</pmdVersion>
-        <version.jcommander>1.82</version.jcommander>
-        <version.com.jcraft.jsch>0.1.55</version.com.jcraft.jsch>
+        <pmdVersion>7.25.0</pmdVersion>
+        <version.jcommander>3.0</version.jcommander>
+        <version.com.jcraft.jsch>2.28.4</version.com.jcraft.jsch>
 
         <!-- Docker -->
         <version.docker-compose-maven-plugin>4.0.0</version.docker-compose-maven-plugin>
@@ -116,7 +116,7 @@
 
         <!-- SCM and Releasing -->
         <version.maven-release-plugin>3.3.1</version.maven-release-plugin>
-        <version.maven-release-plugin.scm>1.13.0</version.maven-release-plugin.scm>
+        <version.maven-release-plugin.scm>2.2.1</version.maven-release-plugin.scm>
 
         <!-- Database Evolution -->
         <version.org.postgresql>42.7.13</version.org.postgresql>
@@ -126,32 +126,32 @@
         <version.plantuml-maven-plugin>1.5.2</version.plantuml-maven-plugin>
         <version.plantuml-maven-plugin.plantuml>1.2026.6</version.plantuml-maven-plugin.plantuml>
 
-        <version.maven-invoker-plugin>3.4.0</version.maven-invoker-plugin>
-        <version.maven-clean-plugin>3.2.0</version.maven-clean-plugin>
-        <version.maven-dependency-plugin>3.4.0</version.maven-dependency-plugin>
-        <version.maven-compiler-plugin>3.10.1</version.maven-compiler-plugin>
-        <version.maven-install-plugin>3.1.0</version.maven-install-plugin>
-        <version.maven-deploy-plugin>3.0.0</version.maven-deploy-plugin>
-        <version.maven-javadoc-plugin>3.4.1</version.maven-javadoc-plugin>
-        <version.maven-source-plugin>3.2.1</version.maven-source-plugin>
-        <version.maven-surefire-plugin>3.0.0-M7</version.maven-surefire-plugin>
-        <version.maven-failsafe-plugin>3.0.0-M7</version.maven-failsafe-plugin>
-        <version.maven-site-plugin>3.12.1</version.maven-site-plugin>
-        <version.maven-project-info-reports-plugin>3.4.1</version.maven-project-info-reports-plugin>
+        <version.maven-invoker-plugin>3.10.1</version.maven-invoker-plugin>
+        <version.maven-clean-plugin>3.5.0</version.maven-clean-plugin>
+        <version.maven-dependency-plugin>3.11.0</version.maven-dependency-plugin>
+        <version.maven-compiler-plugin>3.15.0</version.maven-compiler-plugin>
+        <version.maven-install-plugin>3.1.4</version.maven-install-plugin>
+        <version.maven-deploy-plugin>3.1.4</version.maven-deploy-plugin>
+        <version.maven-javadoc-plugin>3.12.0</version.maven-javadoc-plugin>
+        <version.maven-source-plugin>3.4.0</version.maven-source-plugin>
+        <version.maven-surefire-plugin>3.5.6</version.maven-surefire-plugin>
+        <version.maven-failsafe-plugin>3.5.6</version.maven-failsafe-plugin>
+        <version.maven-site-plugin>3.22.0</version.maven-site-plugin>
+        <version.maven-project-info-reports-plugin>3.9.0</version.maven-project-info-reports-plugin>
         <version.maven-checkstyle-plugin>3.2.0</version.maven-checkstyle-plugin>
         <version.maven-checkstyle-plugin.checkstyle>10.6.0</version.maven-checkstyle-plugin.checkstyle>
-        <version.maven-jxr-plugin>3.3.0</version.maven-jxr-plugin>
-        <version.maven-pmd-plugin>3.19.0</version.maven-pmd-plugin>
-        <version.maven-pmd-plugin.pmd>6.53.0</version.maven-pmd-plugin.pmd>
-        <version.spotbugs-maven-plugin>4.7.3.0</version.spotbugs-maven-plugin>
+        <version.maven-jxr-plugin>3.6.0</version.maven-jxr-plugin>
+        <version.maven-pmd-plugin>3.28.0</version.maven-pmd-plugin>
+        <version.maven-pmd-plugin.pmd>7.17.0</version.maven-pmd-plugin.pmd>
+        <version.spotbugs-maven-plugin>4.10.2.0</version.spotbugs-maven-plugin>
         <version.spotbugs-maven-plugin.spotbugs>4.7.3</version.spotbugs-maven-plugin.spotbugs>
-        <version.maven-surefire-report-plugin>3.0.0-M7</version.maven-surefire-report-plugin>
-        <version.asciidoctor-maven-plugin>2.2.2</version.asciidoctor-maven-plugin>
-        <version.doxia-module-markdown>1.11.1</version.doxia-module-markdown>
-        <version.maven-enforcer-plugin>3.1.0</version.maven-enforcer-plugin>
+        <version.maven-surefire-report-plugin>3.5.6</version.maven-surefire-report-plugin>
+        <version.asciidoctor-maven-plugin>3.2.0</version.asciidoctor-maven-plugin>
+        <version.doxia-module-markdown>2.1.0</version.doxia-module-markdown>
+        <version.maven-enforcer-plugin>3.6.3</version.maven-enforcer-plugin>
 
         <!-- TMP Migration to spring boot 3 -->
-        <junit-jupiter.version>5.9.1</junit-jupiter.version>
+        <junit-jupiter.version>5.14.4</junit-jupiter.version>
         <spring-session-bom.version>3.0.0</spring-session-bom.version>
     </properties>
 
@@ -509,6 +509,26 @@
                         <artifactId>jcommander</artifactId>
                     </exclusion>
                     <exclusion>
+                        <groupId>net.sourceforge.pmd</groupId>
+                        <artifactId>pmd</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>net.sourceforge.pmd</groupId>
+                        <artifactId>pmd-core</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>net.sourceforge.pmd</groupId>
+                        <artifactId>pmd-java</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>net.sourceforge.pmd</groupId>
+                        <artifactId>pmd-javascript</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>net.sourceforge.pmd</groupId>
+                        <artifactId>pmd-jsp</artifactId>
+                    </exclusion>
+                    <exclusion>
                         <groupId>org.antlr</groupId>
                         <artifactId>antlr4-runtime</artifactId>
                     </exclusion>
@@ -543,7 +563,7 @@
                 <scope>provided</scope>
             </dependency>
             <dependency>
-                <groupId>com.beust</groupId>
+                <groupId>org.jcommander</groupId>
                 <artifactId>jcommander</artifactId>
                 <version>${version.jcommander}</version>
                 <scope>provided</scope>
@@ -562,8 +582,8 @@
                 </exclusions>
             </dependency>
             <dependency>
-                <groupId>com.jcraft</groupId>
-                <artifactId>jsch</artifactId>
+                <groupId>com.github.mwiede</groupId>
+    			<artifactId>jsch</artifactId>
                 <version>${version.com.jcraft.jsch}</version>
                 <scope>provided</scope>
             </dependency>
@@ -618,6 +638,7 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-properties-migrator</artifactId>
+                <version>4.1.0</version>
                 <scope>runtime</scope>
             </dependency>
             <dependency>
@@ -938,6 +959,26 @@
                     <artifactId>jcommander</artifactId>
                 </exclusion>
                 <exclusion>
+                    <groupId>net.sourceforge.pmd</groupId>
+                    <artifactId>pmd</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>net.sourceforge.pmd</groupId>
+                    <artifactId>pmd-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>net.sourceforge.pmd</groupId>
+                    <artifactId>pmd-java</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>net.sourceforge.pmd</groupId>
+                    <artifactId>pmd-javascript</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>net.sourceforge.pmd</groupId>
+                    <artifactId>pmd-jsp</artifactId>
+                </exclusion>
+                <exclusion>
                     <groupId>org.antlr</groupId>
                     <artifactId>antlr4-runtime</artifactId>
                 </exclusion>
@@ -968,7 +1009,7 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>com.beust</groupId>
+            <groupId>org.jcommander</groupId>
             <artifactId>jcommander</artifactId>
             <scope>provided</scope>
         </dependency>
@@ -979,7 +1020,7 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.jcraft</groupId>
+            <groupId>com.github.mwiede</groupId>
             <artifactId>jsch</artifactId>
             <scope>provided</scope>
         </dependency>
@@ -1227,7 +1268,7 @@
                             <plugin>
                                 <groupId>com.h3xstream.findsecbugs</groupId>
                                 <artifactId>findsecbugs-plugin</artifactId>
-                                <version>1.12.0</version>
+                                <version>1.14.0</version>
                             </plugin>
                         </plugins>
                     </configuration>
@@ -1287,7 +1328,7 @@
                             <scope>compile</scope>
                         </dependency>
                         <dependency>
-                            <groupId>com.beust</groupId>
+                            <groupId>org.jcommander</groupId>
                             <artifactId>jcommander</artifactId>
                             <version>${version.jcommander}</version>
                             <scope>compile</scope>

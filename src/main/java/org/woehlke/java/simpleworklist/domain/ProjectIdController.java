@@ -61,6 +61,18 @@ public class ProjectIdController extends AbstractController {
   }
 
   @RequestMapping(path = "", method = RequestMethod.GET)
+  public final String projectAlias(
+    @PathVariable long projectId,
+    @PageableDefault(sort = "orderIdProject", direction = Sort.Direction.DESC) Pageable pageable,
+    @RequestParam(required = false) String message,
+    @RequestParam(required = false) boolean isDeleted,
+    @ModelAttribute("userSession") UserSessionBean userSession,
+    Locale locale, Model model
+  ) {
+	  return this.project(projectId, pageable, message, isDeleted, userSession, locale, model);
+  }
+  
+  @RequestMapping(path = "/project", method = RequestMethod.GET)
   public final String project(
     @PathVariable long projectId,
     @PageableDefault(sort = "orderIdProject", direction = Sort.Direction.DESC) Pageable pageable,

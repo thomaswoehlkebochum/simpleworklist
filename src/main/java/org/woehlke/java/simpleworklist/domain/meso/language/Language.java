@@ -31,6 +31,4 @@ public enum Language implements Serializable {
     public static List<Language> list() {
         return Arrays.asList(values());
     }
-
-    private static final long serialVersionUID = 0L;
 }

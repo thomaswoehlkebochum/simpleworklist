@@ -1,10 +1,10 @@
 package org.woehlke.java.simpleworklist.domain;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,7 +21,7 @@ import org.woehlke.java.simpleworklist.domain.db.user.UserAccount;
 import org.woehlke.java.simpleworklist.domain.security.login.LoginForm;
 import org.woehlke.java.simpleworklist.domain.security.login.LoginSuccessService;
 
-@Slf4j
+@Log
 @Controller
 @RequestMapping(path = "/user")
 public class UserLoginController {
@@ -42,7 +42,7 @@ public class UserLoginController {
      * Login Formular. If User is not logged in, this page will be displayed for
      * all page-URLs which need login.
      *
-     * @param model
+     * @param model Model
      * @return Login Screen.
      */
     @RequestMapping(path = "/login", method = RequestMethod.GET)
@@ -56,9 +56,9 @@ public class UserLoginController {
     /**
      * Perform login.
      *
-     * @param loginForm
-     * @param result
-     * @param model
+     * @param loginForm LoginForm
+     * @param result BindingResult
+     * @param model Model
      * @return Shows Root Project after successful login or login form with error messages.
      */
     @RequestMapping(path = "/login", method = RequestMethod.POST)

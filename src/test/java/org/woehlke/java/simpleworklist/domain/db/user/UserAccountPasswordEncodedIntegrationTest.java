@@ -1,14 +1,14 @@
 package org.woehlke.java.simpleworklist.domain.db.user;
 
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.java.Log;
 import org.junit.jupiter.api.*;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext;
+import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.boot.web.server.servlet.context.ServletWebServerApplicationContext;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,7 +27,7 @@ import java.net.URL;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-@Slf4j
+@Log
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @AutoConfigureMockMvc
@@ -81,9 +81,9 @@ public class UserAccountPasswordEncodedIntegrationTest {
             log.info(eyecatcherH2);
             userAccountTestDataService.setUp();
         } catch (Exception ex) {
-            log.warn("Exception: " + ex.getLocalizedMessage());
+            log.info("Exception: " + ex.getLocalizedMessage());
             for (StackTraceElement e : ex.getStackTrace()) {
-                log.warn(e.getClassName() + "." + e.getMethodName() + "in: " + e.getFileName() + " line: " + e.getLineNumber());
+                log.info(e.getClassName() + "." + e.getMethodName() + "in: " + e.getFileName() + " line: " + e.getLineNumber());
             }
         }
         log.info(eyecatcherH2);
@@ -100,9 +100,9 @@ public class UserAccountPasswordEncodedIntegrationTest {
             URL base = new URL("http://localhost:" + port + "/");
             log.info(" Server URL: " + base.toString());
         } catch (Exception ex) {
-            log.warn("Exception: " + ex.getLocalizedMessage());
+            log.info("Exception: " + ex.getLocalizedMessage());
             for (StackTraceElement e : ex.getStackTrace()) {
-                log.warn(e.getClassName() + "." + e.getMethodName() + "in: " + e.getFileName() + " line: " + e.getLineNumber());
+                log.info(e.getClassName() + "." + e.getMethodName() + "in: " + e.getFileName() + " line: " + e.getLineNumber());
             }
         }
         log.info(eyecatcherH2);

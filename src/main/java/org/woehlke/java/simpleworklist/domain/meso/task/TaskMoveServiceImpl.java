@@ -1,7 +1,7 @@
 package org.woehlke.java.simpleworklist.domain.meso.task;
 
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.woehlke.java.simpleworklist.domain.db.data.Context;
@@ -10,12 +10,12 @@ import org.woehlke.java.simpleworklist.domain.db.data.Task;
 import org.woehlke.java.simpleworklist.domain.db.data.task.TaskService;
 import org.woehlke.java.simpleworklist.domain.db.data.task.TaskState;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@Slf4j
+@Log
 @Service
 public class TaskMoveServiceImpl implements TaskMoveService {
 

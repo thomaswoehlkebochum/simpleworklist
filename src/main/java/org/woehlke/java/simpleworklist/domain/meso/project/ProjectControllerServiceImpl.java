@@ -1,6 +1,6 @@
 package org.woehlke.java.simpleworklist.domain.meso.project;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,14 +18,14 @@ import org.woehlke.java.simpleworklist.domain.db.data.task.TaskService;
 import org.woehlke.java.simpleworklist.domain.db.user.UserAccount;
 import org.woehlke.java.simpleworklist.domain.meso.task.TaskMove2TaskService;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Locale;
 
 import static org.woehlke.java.simpleworklist.domain.db.data.task.TaskState.PROJECTS;
 
-@Slf4j
+@Log
 @Service
 public class ProjectControllerServiceImpl implements ProjectControllerService {
 

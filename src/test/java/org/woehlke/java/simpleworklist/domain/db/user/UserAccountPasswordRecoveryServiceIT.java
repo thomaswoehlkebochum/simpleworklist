@@ -1,14 +1,14 @@
 package org.woehlke.java.simpleworklist.domain.db.user;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.java.Log;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext;
+import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.boot.web.server.servlet.context.ServletWebServerApplicationContext;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.web.servlet.MockMvc;
 import org.woehlke.java.simpleworklist.SimpleworklistApplication;
@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-@Slf4j
+@Log
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @AutoConfigureMockMvc
@@ -85,12 +85,12 @@ public class UserAccountPasswordRecoveryServiceIT {
     public void testResetPassword() {
         try {
             this.mockMvc.perform(
-                    get("/user/resetPassword")).andDo(print())
+                    get("/user/resetPassword/form")).andDo(print())
                 .andExpect(view().name(containsString("user/resetPassword/resetPasswordForm")));
         } catch (Exception ex) {
-            log.warn("Exception: " + ex.getLocalizedMessage());
+            log.info("Exception: " + ex.getLocalizedMessage());
             for (StackTraceElement e : ex.getStackTrace()) {
-                log.warn(e.getClassName() + "." + e.getMethodName() + "in: " + e.getFileName() + " line: " + e.getLineNumber());
+                log.info(e.getClassName() + "." + e.getMethodName() + "in: " + e.getFileName() + " line: " + e.getLineNumber());
             }
         }
     }
@@ -103,9 +103,9 @@ public class UserAccountPasswordRecoveryServiceIT {
                     get("/user/resetPassword/confirm/ASDF")).andDo(print())
                 .andExpect(view().name(containsString("user/resetPassword/resetPasswordNotConfirmed")));
         } catch (Exception ex) {
-            log.warn("Exception: " + ex.getLocalizedMessage());
+            log.info("Exception: " + ex.getLocalizedMessage());
             for (StackTraceElement e : ex.getStackTrace()) {
-                log.warn(e.getClassName() + "." + e.getMethodName() + "in: " + e.getFileName() + " line: " + e.getLineNumber());
+                log.info(e.getClassName() + "." + e.getMethodName() + "in: " + e.getFileName() + " line: " + e.getLineNumber());
             }
         }
     }
@@ -132,9 +132,9 @@ public class UserAccountPasswordRecoveryServiceIT {
                 .andExpect(model().attributeExists("userAccountFormBean"));
 
         } catch (Exception ex) {
-            log.warn("Exception: " + ex.getLocalizedMessage());
+            log.info("Exception: " + ex.getLocalizedMessage());
             for (StackTraceElement e : ex.getStackTrace()) {
-                log.warn(e.getClassName() + "." + e.getMethodName() + "in: " + e.getFileName() + " line: " + e.getLineNumber());
+                log.info(e.getClassName() + "." + e.getMethodName() + "in: " + e.getFileName() + " line: " + e.getLineNumber());
             }
         }
         userAccountPasswordRecoveryService.passwordRecoveryDone(o);

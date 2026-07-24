@@ -5,7 +5,6 @@ import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -21,6 +20,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import org.woehlke.java.simpleworklist.domain.security.access.ApplicationUserDetailsService;
+import org.woehlke.java.simpleworklist.domain.security.login.LoginSuccessHandler;
 
 @Configuration
 @EnableAsync
@@ -39,14 +39,16 @@ public class WebSecurityConfig {
 
     private final ApplicationUserDetailsService applicationUserDetailsService;
     private final SimpleworklistProperties simpleworklistProperties;
+    private final LoginSuccessHandler loginSuccessHandler;
 
     @Autowired
     public WebSecurityConfig(
         ApplicationUserDetailsService applicationUserDetailsService,
-        SimpleworklistProperties simpleworklistProperties
-    ) {
+        SimpleworklistProperties simpleworklistProperties,
+        LoginSuccessHandler loginSuccessHandler) {
         this.applicationUserDetailsService = applicationUserDetailsService;
         this.simpleworklistProperties = simpleworklistProperties;
+        this.loginSuccessHandler = loginSuccessHandler;
     }
 
     @Bean
@@ -66,9 +68,9 @@ public class WebSecurityConfig {
 
     @Bean
     public AuthenticationProvider authenticationProvider(){
-        DaoAuthenticationProvider d = new DaoAuthenticationProvider();
+        DaoAuthenticationProvider d = new DaoAuthenticationProvider(userDetailsService());
         d.setPasswordEncoder(encoder());
-        d.setUserDetailsService(userDetailsService());
+        //d.setUserDetailsService(userDetailsService());
         return d;
     }
 
@@ -76,16 +78,16 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .headers((headers) -> headers.disable() )
-            .authorizeRequests((authorizeRequests) -> authorizeRequests
-                .antMatchers(
+            .authorizeHttpRequests((authorizeRequests) -> authorizeRequests
+                .requestMatchers(
                     simpleworklistProperties.getWebSecurity().getAntPatternsPublic()
                 )
                 .permitAll()
                 .anyRequest()
                 .fullyAuthenticated()
             )
-            .csrf()
-            .and()
+            //.csrf()
+            //.and()
             .formLogin((formLogin) -> formLogin
                 .loginPage(simpleworklistProperties.getWebSecurity().getLoginPage())
                 .usernameParameter(simpleworklistProperties.getWebSecurity().getUsernameParameter())
@@ -93,11 +95,11 @@ public class WebSecurityConfig {
                 .loginProcessingUrl(simpleworklistProperties.getWebSecurity().getLoginProcessingUrl())
                 .failureForwardUrl(simpleworklistProperties.getWebSecurity().getFailureForwardUrl())
                 .defaultSuccessUrl(simpleworklistProperties.getWebSecurity().getDefaultSuccessUrl())
-                //.successHandler(authenticationSuccessHandler)
+                .successHandler(this.loginSuccessHandler)
                 .permitAll()
             )
-            .csrf()
-            .and()
+            //.csrf()
+            //.and()
             .logout((logout) ->  logout
                 .logoutUrl(simpleworklistProperties.getWebSecurity().getLogoutUrl())
                 .deleteCookies(simpleworklistProperties.getWebSecurity().getCookieNamesToClear())

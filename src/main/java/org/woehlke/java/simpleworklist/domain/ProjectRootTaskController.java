@@ -1,7 +1,7 @@
 package org.woehlke.java.simpleworklist.domain;
 
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,13 +25,13 @@ import org.woehlke.java.simpleworklist.domain.meso.project.ProjectControllerServ
 import org.woehlke.java.simpleworklist.domain.meso.session.UserSessionBean;
 import org.woehlke.java.simpleworklist.domain.meso.task.TaskLifecycleService;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Locale;
 
 import static org.woehlke.java.simpleworklist.domain.db.data.task.TaskState.PROJECTS;
 
-@Slf4j
+@Log
 @Controller
 @RequestMapping(path = "/project/root/task")
 public class ProjectRootTaskController extends AbstractController {
@@ -186,10 +186,10 @@ public class ProjectRootTaskController extends AbstractController {
     }
     if (result.hasErrors() ) {
       log.info("------------------------------------------------------");
-      log.warn("result.hasErrors");
+      log.info("result.hasErrors");
       log.info("------------------------------------------------------");
       for (ObjectError e : result.getAllErrors()) {
-        log.warn(e.toString());
+        log.info(e.toString());
       }
       List<Context> contexts = super.getContexts();
       thisTask = taskLifecycleService.addProject(thisTask);

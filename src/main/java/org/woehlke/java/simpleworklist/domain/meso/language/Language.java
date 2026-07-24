@@ -1,6 +1,6 @@
 package org.woehlke.java.simpleworklist.domain.meso.language;
 
-import javax.persistence.Enumerated;
+import jakarta.persistence.Enumerated;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
@@ -31,6 +31,4 @@ public enum Language implements Serializable {
     public static List<Language> list() {
         return Arrays.asList(values());
     }
-
-    private static final long serialVersionUID = 0L;
 }

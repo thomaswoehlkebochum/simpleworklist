@@ -4,10 +4,10 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       xmlns:sd="http://www.thymeleaf.org/spring-data">
-<head th:replace="layout/page :: tw-page-head(headtitle=~{::title},links=~{},refreshMessages=true)">
+<head th:replace="~{layout/page :: tw-page-head(headtitle=~{::title},links=~{},refreshMessages=true)}">
   <title th:text="'SimpleWorklist | ' + #{pages.userAccountChatMessages.h1}">Title</title>
 </head>
-<body th:replace="layout/page :: tw-page-body(twcontent=~{::mytwcontent},twtitle=~{::mytwtitle},scripts=~{})">
+<body th:replace="~{layout/page :: tw-page-body(twcontent=~{::mytwcontent},twtitle=~{::mytwtitle},scripts=~{})}">
 
 <div th:fragment="mytwtitle">
   <div class="row my-3 py-3 col">
@@ -22,8 +22,9 @@
 
 <div th:fragment="mytwcontent">
 
-  <form id="formId" th:action="@{/user2user/{userId}/messages/(userId=${otherUser.id})}"
-        th:object="${newUser2UserMessage}" method="post">
+<div th:with="myUrlPath=@{/user2user/{userId}/messages(userId=${otherUser.id})}">
+
+  <form id="formId" th:action="${myUrlPath}" th:object="${newUser2UserMessage}" method="post">
     <div class="row">
       <div class="col">
         <div class="card card-body" id="newUser2UserMessageForm">
@@ -56,7 +57,7 @@
           <span th:text="${m.messageText}"></span>
           <span style="float:right">
               <small>
-                  <span th:text="${#dates.format(m.rowCreatedAt,'dd.MM.yyyy HH:mm:ss')}"></span>
+                  <span th:text="${#temporals.format(m.rowCreatedAt,'dd.MM.yyyy HH:mm:ss')}"></span>
                   <i th:if="${m.readByReceiver}" class="fas fa-check"></i>
               </small>
           </span>
@@ -66,7 +67,7 @@
           <span th:text="${m.messageText}"></span>
           <span style="float:right">
               <small>
-                  <span th:text="${#dates.format(m.rowCreatedAt,'dd.MM.yyyy HH:mm:ss')}"></span>
+                  <span th:text="${#temporals.format(m.rowCreatedAt,'dd.MM.yyyy HH:mm:ss')}"></span>
                   <i th:if="${m.readByReceiver}" class="fas fa-check"></i>
               </small>
           </span>
@@ -75,8 +76,9 @@
     </div>
   </div>
 
-  <div th:replace="layout/tasks :: tw-tasks-pagination(page=${user2UserMessagePage})">
-  </div>
+  <div th:replace="~{layout/tasks :: tw-tasks-pagination(page=${user2UserMessagePage}, myTaskState='', myUrlPath=${myUrlPath})}"></div>
+
+</div>
 </div>
 </body>
 </html>

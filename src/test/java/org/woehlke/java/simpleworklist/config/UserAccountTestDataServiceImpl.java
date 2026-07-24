@@ -1,7 +1,7 @@
 package org.woehlke.java.simpleworklist.config;
 
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.woehlke.java.simpleworklist.domain.db.data.Context;
@@ -11,11 +11,13 @@ import org.woehlke.java.simpleworklist.domain.meso.language.Language;
 import org.woehlke.java.simpleworklist.domain.db.user.UserAccount;
 import org.woehlke.java.simpleworklist.domain.db.user.account.UserAccountService;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.UUID;
 
 
-@Slf4j
+@Log
 @Getter
 @Service
 public class UserAccountTestDataServiceImpl implements UserAccountTestDataService {
@@ -44,7 +46,8 @@ public class UserAccountTestDataServiceImpl implements UserAccountTestDataServic
         this.userAccountService = userAccountService;
         this.contextService = contextService;
         this.simpleworklistProperties = simpleworklistProperties;
-        Date lastLoginTimestamp = new Date();
+        ZoneId zone = ZoneId.systemDefault();
+        LocalDateTime lastLoginTimestamp = LocalDateTime.now(zone);
         testUser = new UserAccount[emails.length];
         newContext = new NewContextForm[emails.length];
         for (int i = 0; i < testUser.length; i++) {

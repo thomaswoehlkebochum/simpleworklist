@@ -4,10 +4,10 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       xmlns:sd="http://www.thymeleaf.org/spring-data">
-<head th:replace="layout/page :: tw-page-head(headtitle=~{::title},links=~{},refreshMessages=false)">
+<head th:replace="~{layout/page :: tw-page-head(headtitle=~{::title},links=~{},refreshMessages=false)}">
     <title th:text="'SimpleWorklist | ' + #{user.selfservice.profile.h1}">Title</title>
 </head>
-<body th:replace="layout/page :: tw-page-body(twcontent=~{::mytwcontent},twtitle=~{::mytwtitle},scripts=~{})">
+<body th:replace="~{layout/page :: tw-page-body(twcontent=~{::mytwcontent},twtitle=~{::mytwtitle},scripts=~{})}">
 
     <div th:fragment="mytwtitle">
       <div class="row my-3 py-3 col">
@@ -45,7 +45,7 @@
                     <tr th:each="user : ${users}">
                         <td>
                             <span th:if="${user.id != thisUser.id}">
-                                <a th:href="@{/user2user/{id}/messages/(id=${user.id})}">
+                                <a th:href="@{/user2user/{id}/messages(id=${user.id})}">
                                     <i class="fas fa-envelope"></i>
                                     <span th:utext="#{pages.users.messages}">Messages</span>
                                     <span class="badge badge-pill badge-dark" th:if="${usersToNewMessages.get(user.id) gt 0}">
@@ -58,10 +58,12 @@
                             <span th:text="${user.userFullname}">user.userFullname</span>
                         </td>
                         <td>
-                            <span th:text="${#dates.format(user.lastLoginTimestamp,'dd.MM.yyyy HH:mm:ss')}"></span>
+                            <span th:text="${#temporals.format(user.lastLoginTimestamp, 'MM/dd/yyyy HH:mm')}" th:if="${#locale.language eq 'en'}"></span>
+                            <span th:text="${#temporals.format(user.lastLoginTimestamp, 'dd.MM.yyyy HH:mm')}" th:if="${#locale.language eq 'de'}"></span>
                         </td>
                         <td>
-                            <span th:text="${#dates.format(user.rowCreatedAt,'dd.MM.yyyy HH:mm:ss')}"></span>
+                            <span th:text="${#temporals.format(user.rowCreatedAt, 'MM/dd/yyyy HH:mm')}" th:if="${#locale.language eq 'en'}"></span>
+                            <span th:text="${#temporals.format(user.rowCreatedAt, 'dd.MM.yyyy HH:mm')}" th:if="${#locale.language eq 'de'}"></span>
                         </td>
                     </tr>
                 </tbody>

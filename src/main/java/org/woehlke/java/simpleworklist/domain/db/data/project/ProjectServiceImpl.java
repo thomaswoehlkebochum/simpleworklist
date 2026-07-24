@@ -1,6 +1,8 @@
 package org.woehlke.java.simpleworklist.domain.db.data.project;
 
-import lombok.extern.slf4j.Slf4j;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,13 +14,12 @@ import org.woehlke.java.simpleworklist.domain.db.data.Project;
 import org.woehlke.java.simpleworklist.domain.db.data.Task;
 import org.woehlke.java.simpleworklist.domain.db.data.task.TaskRepository;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@Slf4j
+@Log
 @Service
 @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
 public class ProjectServiceImpl implements ProjectService {
@@ -72,7 +73,8 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW, readOnly = false)
     public Project add(@NotNull Project entity) {
-        log.info("saveAndFlush");
+        log.info("saveAndFlush : "+entity.toString());
+        entity.setId(null);
         entity.setUuid(UUID.randomUUID());
         return projectRepository.saveAndFlush(entity);
     }

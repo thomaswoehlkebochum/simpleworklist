@@ -1,6 +1,6 @@
 package org.woehlke.java.simpleworklist.domain.db.user.chat;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.java.Log;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -11,7 +11,7 @@ import org.woehlke.java.simpleworklist.domain.db.user.UserAccount;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -19,7 +19,7 @@ import java.util.UUID;
 /**
  * Created by tw on 16.02.2016.
  */
-@Slf4j
+@Log
 @Service
 public class ChatMessageServiceImpl implements ChatMessageService {
 

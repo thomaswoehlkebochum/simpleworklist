@@ -33,14 +33,16 @@ spring:
     generate-ddl: true
     database-platform: POSTGRESQL
     hibernate:
-        #ddl-auto: create-drop update validate
-      ddl-auto: ${BLOODMONEY_HIBERNATE_DDL_AUTO}
+      #ddl-auto: create-drop
+      #ddl-auto: update
+      #ddl-auto: validate
+      ddl-auto: ${SIMPLEWORKLIST_JPA_DLL_AUTO}
       naming:
         implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQL95Dialect
+        dialect: org.hibernate.dialect.PostgreSQLDialect
         temp:
           use_jdbc_metadata_defaults: false
         generate_statistics: true
@@ -142,8 +144,8 @@ debug: false
 spring:
   profiles:
     active: default
-  datasource:
-    url: jdbc:postgresql://localhost:5432/simpleworklist
+  #datasource:
+  #  url: jdbc:postgresql://localhost:5432/simpleworklist
   jta:
     atomikos:
       properties:
@@ -152,8 +154,10 @@ spring:
     log-dir: transaction-logs/tx-logs-simpleworklist
   jpa:
     hibernate:
-      #ddl-auto: create-drop update validate
-      ddl-auto: validate
+      #ddl-auto: create-drop
+      #ddl-auto: update
+      #ddl-auto: validate
+      ddl-auto: ${SIMPLEWORKLIST_JPA_DLL_AUTO}
 server:
   port: ${PORT}
   compression:

@@ -1,19 +1,16 @@
 package org.woehlke.java.simpleworklist.domain.db.data;
 
 import lombok.*;
-import org.hibernate.annotations.LazyToOne;
 import org.hibernate.validator.constraints.Length;
 
 import org.woehlke.java.simpleworklist.application.framework.AuditModel;
 import org.woehlke.java.simpleworklist.application.framework.ComparableById;
 import org.woehlke.java.simpleworklist.domain.db.user.UserAccount;
 
-import javax.persistence.*;
-import javax.persistence.Index;
+import jakarta.persistence.*;
+import jakarta.persistence.Index;
 import java.io.Serializable;
 import java.util.UUID;
-
-import static org.hibernate.annotations.LazyToOneOption.PROXY;
 
 /**
  * Created by tw on 13.03.16.
@@ -58,7 +55,7 @@ public class Context extends AuditModel implements Serializable, ComparableById<
             CascadeType.REFRESH
         })
     @JoinColumn(name = "user_account_id")
-    @LazyToOne(PROXY)
+    //@LazyToOne(PROXY)
     private UserAccount userAccount;
 
     @Length(min = 1, max = 255)

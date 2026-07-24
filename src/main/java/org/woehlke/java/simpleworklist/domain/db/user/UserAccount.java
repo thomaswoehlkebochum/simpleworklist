@@ -1,7 +1,8 @@
 package org.woehlke.java.simpleworklist.domain.db.user;
 
-import javax.validation.constraints.Email;
+import jakarta.validation.constraints.Email;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,13 +12,16 @@ import org.woehlke.java.simpleworklist.domain.db.data.Context;
 import org.woehlke.java.simpleworklist.application.framework.AuditModel;
 import org.woehlke.java.simpleworklist.application.framework.ComparableById;
 
+import java.io.Serial;
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.UUID;
 
-import javax.persistence.*;
-import javax.persistence.Index;
-import javax.validation.constraints.NotBlank;
+import jakarta.persistence.*;
+import jakarta.persistence.Index;
+
 
 @Entity
 @Table(
@@ -36,8 +40,9 @@ import javax.validation.constraints.NotBlank;
 @Setter
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true, exclude = {"userPassword","defaultLanguage","defaultContext","lastLoginTimestamp"})
-public class UserAccount extends AuditModel implements Serializable, ComparableById<UserAccount>,Comparable<UserAccount> {
+public class UserAccount extends AuditModel implements Serializable, ComparableById<UserAccount>, Comparable<UserAccount> {
 
+    @Serial
     private static final long serialVersionUID = 7860692526488291439L;
 
     @Id
@@ -80,7 +85,7 @@ public class UserAccount extends AuditModel implements Serializable, ComparableB
     //@NotNull
     @Temporal(value = TemporalType.TIMESTAMP)
     @Column(name="last_login_timestamp", nullable = false)
-    private Date lastLoginTimestamp;
+    private LocalDateTime lastLoginTimestamp;
 
     //@NotNull
     @Column(name="account_non_expired", nullable = false)
@@ -122,7 +127,8 @@ public class UserAccount extends AuditModel implements Serializable, ComparableB
       final String userPassword,
       Context[] contexts
     ){
-        Date now = new Date();
+        ZoneId zone = ZoneId.systemDefault();
+        LocalDateTime now = LocalDateTime.now(zone);
         UserAccount u = new UserAccount();
         u.setUserEmail(userEmail);
         u.setUserFullname(userFullname);

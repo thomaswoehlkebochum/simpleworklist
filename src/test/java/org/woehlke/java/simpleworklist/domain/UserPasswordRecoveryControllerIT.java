@@ -1,13 +1,13 @@
 package org.woehlke.java.simpleworklist.domain;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.java.Log;
 import org.junit.jupiter.api.*;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext;
+import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.boot.web.server.servlet.context.ServletWebServerApplicationContext;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.MockMvc;
@@ -32,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-@Slf4j
+@Log
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @AutoConfigureMockMvc
@@ -111,9 +111,9 @@ public class UserPasswordRecoveryControllerIT {
             log.info(" @BeforeTestClass runBeforeTestClass");
         log.info(eyecatcherH1);
         } catch (Exception ex) {
-            log.warn("Exception: " + ex.getLocalizedMessage());
+            log.info("Exception: " + ex.getLocalizedMessage());
             for (StackTraceElement e : ex.getStackTrace()) {
-                log.warn(e.getClassName() + "." + e.getMethodName() + "in: " + e.getFileName() + " line: " + e.getLineNumber());
+                log.info(e.getClassName() + "." + e.getMethodName() + "in: " + e.getFileName() + " line: " + e.getLineNumber());
             }
         }
     }
@@ -130,9 +130,9 @@ public class UserPasswordRecoveryControllerIT {
             SecurityContextHolder.clearContext();
             log.info(eyecatcherH1);
         } catch (Exception ex) {
-            log.warn("Exception: " + ex.getLocalizedMessage());
+            log.info("Exception: " + ex.getLocalizedMessage());
             for (StackTraceElement e : ex.getStackTrace()) {
-                log.warn(e.getClassName() + "." + e.getMethodName() + "in: " + e.getFileName() + " line: " + e.getLineNumber());
+                log.info(e.getClassName() + "." + e.getMethodName() + "in: " + e.getFileName() + " line: " + e.getLineNumber());
             }
         }
     }
@@ -145,13 +145,18 @@ public class UserPasswordRecoveryControllerIT {
     @Test
     public void testResetPassword() {
         try {
+            String url = "/user/resetPassword/form";
+            log.info(eyecatcherH2);
+            log.info(url);
+            log.info(eyecatcherH2);
             this.mockMvc.perform(
-                    get("/user/resetPassword")).andDo(print())
+                    get(url)).andDo(print())
                     .andExpect(view().name(containsString("user/resetPassword/resetPasswordForm")));
+            log.info(eyecatcherH2);
         } catch (Exception ex) {
-            log.warn("Exception: " + ex.getLocalizedMessage());
+            log.info("Exception: " + ex.getLocalizedMessage());
             for (StackTraceElement e : ex.getStackTrace()) {
-                log.warn(e.getClassName() + "." + e.getMethodName() + "in: " + e.getFileName() + " line: " + e.getLineNumber());
+                log.info(e.getClassName() + "." + e.getMethodName() + "in: " + e.getFileName() + " line: " + e.getLineNumber());
             }
         }
     }
@@ -160,13 +165,18 @@ public class UserPasswordRecoveryControllerIT {
     @Test
     public void testEnterNewPasswordFormular() {
         try {
+            String url ="/user/resetPassword/confirm/ASDF";
+            log.info(eyecatcherH2);
+            log.info(url);
+            log.info(eyecatcherH2);
             this.mockMvc.perform(
-                    get("/user/resetPassword/confirm/ASDF")).andDo(print())
+                    get(url)).andDo(print())
                     .andExpect(view().name(containsString("user/resetPassword/resetPasswordNotConfirmed")));
+            log.info(eyecatcherH2);
         } catch (Exception ex) {
-            log.warn("Exception: " + ex.getLocalizedMessage());
+            log.info("Exception: " + ex.getLocalizedMessage());
             for (StackTraceElement e : ex.getStackTrace()) {
-                log.warn(e.getClassName() + "." + e.getMethodName() + "in: " + e.getFileName() + " line: " + e.getLineNumber());
+                log.info(e.getClassName() + "." + e.getMethodName() + "in: " + e.getFileName() + " line: " + e.getLineNumber());
             }
         }
     }
@@ -181,21 +191,26 @@ public class UserPasswordRecoveryControllerIT {
             e.printStackTrace();
         }
         try {
-        UserAccountPasswordRecovery o = testHelperService.findPasswordRecoveryByEmail(emails[0]);
-        assertNotNull(o);
-        boolean result = o.getDoubleOptInStatus()== UserAccountPasswordRecoveryStatus.PASSWORD_RECOVERY_SAVED_EMAIL
-                || o.getDoubleOptInStatus()== UserAccountPasswordRecoveryStatus.PASSWORD_RECOVERY_SENT_EMAIL;
-        assertTrue(result);
-        String url = "/user/resetPassword/confirm/"+o.getToken();
-        this.mockMvc.perform(
+            UserAccountPasswordRecovery o = testHelperService.findPasswordRecoveryByEmail(emails[0]);
+            assertNotNull(o);
+            boolean result = o.getDoubleOptInStatus()== UserAccountPasswordRecoveryStatus.PASSWORD_RECOVERY_SAVED_EMAIL
+                    || o.getDoubleOptInStatus()== UserAccountPasswordRecoveryStatus.PASSWORD_RECOVERY_SENT_EMAIL;
+            assertTrue(result);
+            String url = "/user/resetPassword/confirm/"+o.getToken();
+                log.info(eyecatcherH2);
+                log.info(url);
+                log.info(eyecatcherH2);
+            this.mockMvc.perform(
                 get(url)).andDo(print())
                 .andExpect(view().name(containsString("user/resetPassword/resetPasswordConfirmed")))
                 .andExpect(model().attributeExists("userAccountFormBean"));
+            log.info(eyecatcherH2);
             userAccountPasswordRecoveryService.passwordRecoveryDone(o);
+            log.info(eyecatcherH2);
         } catch (Exception ex) {
-            log.warn("Exception: " + ex.getLocalizedMessage());
+            log.info("Exception: " + ex.getLocalizedMessage());
             for (StackTraceElement e : ex.getStackTrace()) {
-                log.warn(e.getClassName() + "." + e.getMethodName() + "in: " + e.getFileName() + " line: " + e.getLineNumber());
+                log.info(e.getClassName() + "." + e.getMethodName() + "in: " + e.getFileName() + " line: " + e.getLineNumber());
             }
         }
     }

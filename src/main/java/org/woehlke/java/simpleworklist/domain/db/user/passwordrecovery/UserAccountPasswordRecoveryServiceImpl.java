@@ -1,6 +1,6 @@
 package org.woehlke.java.simpleworklist.domain.db.user.passwordrecovery;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
@@ -13,10 +13,13 @@ import org.woehlke.java.simpleworklist.config.SimpleworklistProperties;
 import org.woehlke.java.simpleworklist.domain.db.user.UserAccountPasswordRecovery;
 import org.woehlke.java.simpleworklist.domain.db.user.token.TokenGeneratorService;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.Date;
 import java.util.UUID;
 
-@Slf4j
+@Log
 @Service
 @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
 public class UserAccountPasswordRecoveryServiceImpl implements UserAccountPasswordRecoveryService {
@@ -49,8 +52,10 @@ public class UserAccountPasswordRecoveryServiceImpl implements UserAccountPasswo
     public void passwordRecoveryCheckIfResponseIsInTime(String email) {
         UserAccountPasswordRecovery earlierOptIn = userAccountPasswordRecoveryRepository.findByEmail(email);
         if (earlierOptIn != null) {
-            Date now = new Date();
-            if ((simpleworklistProperties.getRegistration().getTtlEmailVerificationRequest() + earlierOptIn.getRowCreatedAt().getTime()) < now.getTime()) {
+            ZoneId zone = ZoneId.systemDefault();
+            ZoneOffset offset = ZoneOffset.UTC;
+            LocalDateTime now = LocalDateTime.now(zone);
+            if ((simpleworklistProperties.getRegistration().getTtlEmailVerificationRequest() + earlierOptIn.getRowCreatedAt().toEpochSecond(offset)) < now.toEpochSecond(offset)) {
                 userAccountPasswordRecoveryRepository.delete(earlierOptIn);
             }
         }
@@ -110,14 +115,16 @@ public class UserAccountPasswordRecoveryServiceImpl implements UserAccountPasswo
         msg.setText(
                 "Dear User, "
                         + "for Password Reset at SimpleWorklist, "
-                        + "Please go to URL: \nhttp://" + urlHost + "/user/resetPassword/confirm/" + o.getToken()
-                        + "\n\nSincerely Yours, The Team");
-        msg.setSubject("Password Reset at Simple Worklist");
+                        + "Please open URL: \n"
+                        + urlHost + "/user/resetPassword/confirm/" + o.getToken()
+                        + "\n\nSincerely Yours, \nThe Simpleworklist Team"
+        );
+        msg.setSubject("[SimpleWorklist] Password Reset");
         msg.setFrom(mailFrom);
         try {
             this.mailSender.send(msg);
         } catch (MailException ex) {
-            log.warn(ex.getMessage() + " for " + o.toString());
+            log.info(ex.getMessage() + " for " + o.toString());
             success = false;
         }
         if (success) {

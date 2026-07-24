@@ -1,6 +1,6 @@
 package org.woehlke.java.simpleworklist.domain;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,14 +27,14 @@ import org.woehlke.java.simpleworklist.domain.db.data.task.TaskState;
 import org.woehlke.java.simpleworklist.domain.db.user.UserAccount;
 import org.woehlke.java.simpleworklist.domain.meso.session.UserSessionBean;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
 import static org.woehlke.java.simpleworklist.domain.db.data.task.TaskState.PROJECTS;
 
-@Slf4j
+@Log
 @Controller
 @RequestMapping(path = "/project/root")
 public class ProjectRootController extends AbstractController {
@@ -53,6 +53,17 @@ public class ProjectRootController extends AbstractController {
     }
 
     @RequestMapping(path="", method = RequestMethod.GET)
+    public final String projectRootAlias(
+        @PageableDefault(sort = "orderIdProject", direction = Sort.Direction.DESC) Pageable pageable,
+        @RequestParam(required = false) String message,
+        @RequestParam(required = false) boolean isDeleted,
+        @ModelAttribute("userSession") UserSessionBean userSession,
+        Locale locale, Model model
+    ) {
+    	return this.projectRoot(pageable, message, isDeleted, userSession, locale, model);
+    }
+    
+    @RequestMapping(path="/project", method = RequestMethod.GET)
     public final String projectRoot(
         @PageableDefault(sort = "orderIdProject", direction = Sort.Direction.DESC) Pageable pageable,
         @RequestParam(required = false) String message,

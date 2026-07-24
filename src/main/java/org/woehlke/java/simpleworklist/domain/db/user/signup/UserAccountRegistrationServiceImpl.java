@@ -1,9 +1,12 @@
 package org.woehlke.java.simpleworklist.domain.db.user.signup;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.Date;
 import java.util.UUID;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.mail.MailException;
@@ -17,7 +20,7 @@ import org.woehlke.java.simpleworklist.config.SimpleworklistProperties;
 import org.woehlke.java.simpleworklist.domain.db.user.UserAccountRegistration;
 import org.woehlke.java.simpleworklist.domain.db.user.token.TokenGeneratorService;
 
-@Slf4j
+@Log
 @Service
 @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
 public class UserAccountRegistrationServiceImpl implements UserAccountRegistrationService {
@@ -28,7 +31,12 @@ public class UserAccountRegistrationServiceImpl implements UserAccountRegistrati
     private final JavaMailSender mailSender;
 
     @Autowired
-    public UserAccountRegistrationServiceImpl(SimpleworklistProperties simpleworklistProperties, UserAccountRegistrationRepository userAccountRegistrationRepository, TokenGeneratorService tokenGeneratorService, JavaMailSender mailSender) {
+    public UserAccountRegistrationServiceImpl(
+        SimpleworklistProperties simpleworklistProperties,
+        UserAccountRegistrationRepository userAccountRegistrationRepository,
+        TokenGeneratorService tokenGeneratorService,
+        JavaMailSender mailSender
+    ) {
         this.simpleworklistProperties = simpleworklistProperties;
         this.userAccountRegistrationRepository = userAccountRegistrationRepository;
         this.tokenGeneratorService = tokenGeneratorService;
@@ -38,7 +46,8 @@ public class UserAccountRegistrationServiceImpl implements UserAccountRegistrati
     @Override
     public boolean registrationIsRetryAndMaximumNumberOfRetries(String email) {
         UserAccountRegistration earlierOptIn = userAccountRegistrationRepository.findByEmail(email);
-        return earlierOptIn == null?false:(earlierOptIn.getNumberOfRetries() >= simpleworklistProperties.getRegistration().getMaxRetries());
+        return earlierOptIn == null?false:(earlierOptIn.getNumberOfRetries()
+            >= simpleworklistProperties.getRegistration().getMaxRetries());
     }
 
     @Override
@@ -46,8 +55,11 @@ public class UserAccountRegistrationServiceImpl implements UserAccountRegistrati
     public void registrationCheckIfResponseIsInTime(String email) {
         UserAccountRegistration earlierOptIn = userAccountRegistrationRepository.findByEmail(email);
         if (earlierOptIn != null) {
-            Date now = new Date();
-            if ((simpleworklistProperties.getRegistration().getTtlEmailVerificationRequest() + earlierOptIn.getRowCreatedAt().getTime()) < now.getTime()) {
+            ZoneId zone = ZoneId.systemDefault();
+            ZoneOffset offset = ZoneOffset.UTC;
+            LocalDateTime now = LocalDateTime.now(zone);
+            if ((simpleworklistProperties.getRegistration().getTtlEmailVerificationRequest()
+                + earlierOptIn.getRowCreatedAt().toEpochSecond(offset)) < now.toEpochSecond(offset)) {
                 userAccountRegistrationRepository.delete(earlierOptIn);
             }
         }
@@ -109,16 +121,18 @@ public class UserAccountRegistrationServiceImpl implements UserAccountRegistrati
         SimpleMailMessage msg = new SimpleMailMessage();
         msg.setTo(o.getEmail());
         msg.setText(
-                "Dear new User, "
+                "Dear new User,\n\n"
                         + "thank you for registring at Simple Worklist. \n"
-                        + "Please validate your email and go to URL: \nhttp://" + urlHost + "/user/register/confirm/" + o.getToken()
-                        + "\n\nSincerely Yours, The Team");
-        msg.setSubject("Your Registration at Simple Worklist");
+                        + "Please validate your email and open this URL: \n"
+                        + urlHost + "/user/register/confirm/" + o.getToken()
+                        + "\n\nSincerely Yours, \nThe Simpleworklist Team"
+        );
+        msg.setSubject("[SimpleWorklist] Your Registration");
         msg.setFrom(mailFrom);
         try {
             this.mailSender.send(msg);
         } catch (MailException ex) {
-            log.warn(ex.getMessage() + " for " + o.toString());
+            log.info(ex.getMessage() + " for " + o.toString());
             success = false;
         }
         if (success) {

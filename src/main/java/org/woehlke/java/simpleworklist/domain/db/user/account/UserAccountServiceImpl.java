@@ -3,12 +3,11 @@ package org.woehlke.java.simpleworklist.domain.db.user.account;
 
 import java.util.*;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -19,9 +18,9 @@ import org.woehlke.java.simpleworklist.domain.db.user.UserAccount;
 import org.woehlke.java.simpleworklist.domain.db.user.chat.ChatMessageRepository;
 import org.woehlke.java.simpleworklist.domain.db.data.context.ContextRepository;
 
-@Slf4j
-@Service("userAccountService")
-//@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+@Log
+@Service
+@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
 public class UserAccountServiceImpl implements UserAccountService {
 
     private final UserAccountRepository userAccountRepository;
@@ -30,12 +29,18 @@ public class UserAccountServiceImpl implements UserAccountService {
     private final PasswordEncoder encoder;
 
     @Autowired
-    public UserAccountServiceImpl(UserAccountRepository userAccountRepository, ChatMessageRepository userMessageRepository, ContextRepository contextRepository) {
+    public UserAccountServiceImpl(
+        UserAccountRepository userAccountRepository,
+        ChatMessageRepository userMessageRepository,
+        ContextRepository contextRepository,
+        PasswordEncoder encoder
+    ) {
         this.userAccountRepository = userAccountRepository;
         this.userMessageRepository = userMessageRepository;
         this.contextRepository = contextRepository;
-        int strength = 10;
-        this.encoder = new BCryptPasswordEncoder(strength);
+        //int strength = this.simpleworklistProperties.getWebSecurity().getStrengthBCryptPasswordEncoder();
+        //this.encoder = new BCryptPasswordEncoder(strength);
+        this.encoder = encoder;
     }
 
     public boolean isEmailAvailable(String email) {
@@ -64,7 +69,7 @@ public class UserAccountServiceImpl implements UserAccountService {
     }
 
     @Override
-    //@Transactional(propagation = Propagation.REQUIRES_NEW, readOnly = false)
+    @Transactional(propagation = Propagation.REQUIRES_NEW, readOnly = false)
     public UserAccount saveAndFlush(UserAccount u) {
         return userAccountRepository.saveAndFlush(u);
     }
@@ -80,7 +85,7 @@ public class UserAccountServiceImpl implements UserAccountService {
     }
 
     @Override
-    //@Transactional(propagation = Propagation.REQUIRES_NEW, readOnly = false)
+    @Transactional(propagation = Propagation.REQUIRES_NEW, readOnly = false)
     public void changeUsersPassword(UserAccountForm userAccount) {
         UserAccount ua = userAccountRepository.findByUserEmail(userAccount.getUserEmail());
         if(ua != null) {
@@ -103,7 +108,8 @@ public class UserAccountServiceImpl implements UserAccountService {
             if(receiver.getId().longValue() == sender.getId().longValue()){
                 newIncomingMessagesForEachOtherUser.put(sender.getId(),0);
             } else {
-                List<UserAccountChatMessage> userAccountChatMessages = userMessageRepository.findBySenderAndReceiverAndReadByReceiver(sender,receiver,false);
+                List<UserAccountChatMessage> userAccountChatMessages =
+                    userMessageRepository.findBySenderAndReceiverAndReadByReceiver(sender,receiver,false);
                 newIncomingMessagesForEachOtherUser.put(sender.getId(), userAccountChatMessages.size());
             }
         }

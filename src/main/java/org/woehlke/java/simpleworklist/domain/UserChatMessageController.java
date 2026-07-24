@@ -1,6 +1,6 @@
 package org.woehlke.java.simpleworklist.domain;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,15 +23,15 @@ import org.woehlke.java.simpleworklist.domain.meso.breadcrumb.BreadcrumbService;
 import org.woehlke.java.simpleworklist.domain.meso.chat.UserChatMessageControllerService;
 import org.woehlke.java.simpleworklist.domain.meso.session.UserSessionBean;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import java.util.Locale;
 
 /**
  * Created by
  * on 16.02.2016.
  */
-@Slf4j
+@Log
 @Controller
 @RequestMapping(path = "/user2user")
 public class UserChatMessageController extends AbstractController {
@@ -49,7 +49,7 @@ public class UserChatMessageController extends AbstractController {
     this.breadcrumbService = breadcrumbService;
   }
 
-  @RequestMapping(path = "/{userId}/messages/", method = RequestMethod.GET)
+  @RequestMapping(path = "/{userId}/messages", method = RequestMethod.GET)
   public final String getLastMessagesBetweenCurrentAndOtherUser(
     @Valid @NotNull @PathVariable("userId") UserAccount otherUser,
     @PageableDefault(sort = "rowCreatedAt", direction = Sort.Direction.DESC) Pageable request,
@@ -93,7 +93,7 @@ public class UserChatMessageController extends AbstractController {
     return "user/messages/all";
   }
 
-  @RequestMapping(path = "/{userId}/messages/", method = RequestMethod.POST)
+  @RequestMapping(path = "/{userId}/messages", method = RequestMethod.POST)
   public final String sendNewMessageToOtherUser(
     @PathVariable("userId") UserAccount otherUser,
     @Valid @ModelAttribute("newUser2UserMessage") ChatMessageForm chatMessageForm,
@@ -123,7 +123,7 @@ public class UserChatMessageController extends AbstractController {
     } else {
       userChatMessageControllerService.sendNewUserMessage(thisUser, otherUser, chatMessageForm);
       model.addAttribute("userSession", userSession);
-      return "redirect:/user2user/" + otherUser.getId() + "/messages/";
+      return "redirect:/user2user/" + otherUser.getId() + "/messages";
     }
   }
 

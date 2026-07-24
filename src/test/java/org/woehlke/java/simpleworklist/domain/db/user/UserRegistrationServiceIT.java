@@ -1,11 +1,11 @@
 package org.woehlke.java.simpleworklist.domain.db.user;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.java.Log;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.woehlke.java.simpleworklist.SimpleworklistApplication;
@@ -18,12 +18,15 @@ import org.woehlke.java.simpleworklist.domain.db.user.passwordrecovery.UserAccou
 import org.springframework.beans.factory.annotation.Autowired;
 import org.woehlke.java.simpleworklist.domain.db.user.signup.UserAccountRegistrationService;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.Date;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@Slf4j
+@Log
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @AutoConfigureMockMvc
@@ -113,7 +116,8 @@ public class UserRegistrationServiceIT {
         UserAccountRegistration o = testHelperService.findRegistrationByEmail(emails[0]);
         //assertNull(o);
         assertNotNull(o);
-        o.setRowCreatedAt(new Date(o.getRowCreatedAt().getTime() - simpleworklistProperties.getRegistration().getTtlEmailVerificationRequest()));
+        LocalDateTime a = o.getRowCreatedAt().minusSeconds(simpleworklistProperties.getRegistration().getTtlEmailVerificationRequest());
+        o.setRowCreatedAt(a);
         o.setNumberOfRetries(0);
         userAccountRegistrationService.registrationClickedInEmail(o);
         userAccountRegistrationService.registrationCheckIfResponseIsInTime(emails[0]);
@@ -133,7 +137,8 @@ public class UserRegistrationServiceIT {
         userAccountPasswordRecoveryService.passwordRecoveryCheckIfResponseIsInTime(emails[0]);
         UserAccountPasswordRecovery o = testHelperService.findPasswordRecoveryByEmail(emails[0]);
         assertNotNull(o);
-        o.setRowCreatedAt(new Date(o.getRowCreatedAt().getTime() -  simpleworklistProperties.getRegistration().getTtlEmailVerificationRequest()));
+        LocalDateTime a = o.getRowCreatedAt().minusSeconds(simpleworklistProperties.getRegistration().getTtlEmailVerificationRequest());
+        o.setRowCreatedAt(a);
         o.setNumberOfRetries(0);
         userAccountPasswordRecoveryService.passwordRecoveryClickedInEmail(o);
         userAccountPasswordRecoveryService.passwordRecoveryCheckIfResponseIsInTime(emails[0]);

@@ -220,7 +220,7 @@ public class ProjectIdTaskController extends AbstractController {
     }
   }
 
-  @RequestMapping(path = "/transform", method = RequestMethod.GET)
+  @RequestMapping(path = "/{taskId}/transform", method = RequestMethod.GET)
   public final String transformTaskIntoProjectGet(
     @PathVariable("projectId") Project thisProject,
     @PathVariable("taskId") Task task,
@@ -236,7 +236,7 @@ public class ProjectIdTaskController extends AbstractController {
     return taskLifecycleService.transformTaskIntoProjectGet(task, userSession, model);
   }
 
-  @RequestMapping(path = "/task/{taskId}/complete", method = RequestMethod.GET)
+  @RequestMapping(path = "/{taskId}/complete", method = RequestMethod.GET)
   public final String setDoneTaskGet(
     @PathVariable("projectId") Project thisProject,
     @ModelAttribute("userSession") UserSessionBean userSession,
@@ -254,7 +254,7 @@ public class ProjectIdTaskController extends AbstractController {
     return thisProject.getUrl();
   }
 
-  @RequestMapping(path = "/task/{taskId}/incomplete", method = RequestMethod.GET)
+  @RequestMapping(path = "/{taskId}/incomplete", method = RequestMethod.GET)
   public final String unsetDoneTaskGet(
     @PathVariable("projectId") Project thisProject,
     @ModelAttribute("userSession") UserSessionBean userSession,
@@ -272,7 +272,7 @@ public class ProjectIdTaskController extends AbstractController {
     return thisProject.getUrl();
   }
 
-  @RequestMapping(path = "/task/{taskId}/setfocus", method = RequestMethod.GET)
+  @RequestMapping(path = "/{taskId}/setfocus", method = RequestMethod.GET)
   public final String setFocusGet(
     @PathVariable("projectId") Project thisProject,
     @ModelAttribute("userSession") UserSessionBean userSession,
@@ -288,7 +288,7 @@ public class ProjectIdTaskController extends AbstractController {
     return thisProject.getUrl();
   }
 
-  @RequestMapping(path = "/task/{taskId}/unsetfocus", method = RequestMethod.GET)
+  @RequestMapping(path = "/{taskId}/unsetfocus", method = RequestMethod.GET)
   public final String unsetFocusGet(
     @PathVariable("projectId") Project thisProject,
     @ModelAttribute("userSession") UserSessionBean userSession,
